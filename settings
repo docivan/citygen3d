@@ -1,0 +1,13 @@
+{
+    "width":                1200,
+    "height":               1200,
+
+    "car_prob_min":         0,
+    "car_prob_max":         1,
+
+    "car_l_min":            3,
+    "car_l_max":            6,
+    "car_h_ratio":          0.5,
+
+    "debug":                "True"
+}

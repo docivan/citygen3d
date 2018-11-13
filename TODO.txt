@@ -1,0 +1,26 @@
+TODO for v01, aka proof of concept 2
+- main goal is to have a city generator with somewhat complete / mock up features ready
+[V] edit to make file as global, do not need to pass stlfile
+[V] 3d funcs into utils.py
+[ ] all new files configured through JSON
+[ ] populate streets
+[ ] sort bld_rects in blocks: inner or outer
+[ ] create placeholders for functions: bld (just boxes, random h)
+
+
+TODO for v02
+- clean up, implement all the little features before attacking buildings
+[ ] finish primitives: cone, cylinder
+[ ] finish tree generation
+[ ] populate streets
+[ ] proper JSON everywhere
+[ ] instead of awkward for loops with idx in range => do idx, val in enumerate
+[ ] 2d rect should be standardised!
+
+TODO fro v03
+[ ] bld generation
+[ ] trucks on the roads: takes up two spaces and are higher!
+
+
+
+unsorted:

@@ -1,0 +1,64 @@
+main.py
+3d.py: mesh export
+2d.py: rect operation (split etc)
+utils.py: tuple ck for pt
+
+
+
+preconf
+gen_blocks
+populate_str
+gen_bld_spaces
+populate_bld_spaces
+postconf
+
+
+
+
+
+#with open("out.scad", "w") as f :
+#	f.write("translate([0,0,-5]){{cube([{}, {}, 5]);}}\n".format(width + skirt_size*2, height + skirt_size*2))
+
+#	for a in building_areas:
+#		for b in a :
+#			f.write("translate([{}, {}, 0]){{".format(b[0], b[1]))
+#			f.write("cube([{}, {}, {}]);}}\n".format(b[2]-b[0],b[3]-b[1],random.randint(bld_h_min, bld_h_max)))
+
+# - start with one side, generate number of buildings
+# - subdivide space between them, allocating a quad to each => make a list
+# for each building space
+# - building type
+# - spacing to adjacent?
+# - height
+# - ...this list will be expanded...
+
+
+# TODO
+# [ ] should stop naming side as width - only leads to confusion
+# buildings:
+#-random gap between building_rect and the bld itself
+#--can be different for borders to street and to neighbouring bldings
+#-for each rect tower (wether as part of modern or classic bld)
+#--might have up to two top ledges, with random displ. ifht hverandre:
+#  _
+# -
+# |
+# -
+#  -
+#    |
+#bld types: for now 3...
+#-classic: single (or symm?) tower with a var nr of pyramid strct. on top
+#-modern: one or several rect towers
+# generate windows for blds - eller centrale riller, rnd antal
+# for some bld - balconies?
+#antenna on top of random roofs!
+#-sleek: cylinder, evt. squeezed?
+#streets
+#-from str data, get crossings
+#-decide for each: which way does traffic flow?
+#-also, subdiv each strt into nr of lanes div by 2
+#-from this, genereate lanes of one-way traffic:
+#--these are one dir: nearly 100% car density towards traffic light
+#---tapering off at the other end
+#-consider pedestrians - crossing ± side walks
+#split into files: parks.py, streets.py, buildings.py, settings.py
