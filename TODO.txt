@@ -1,6 +1,7 @@
 VERSION v01, aka proof of concept 1
 - main goal is that a city can be generated and printed
 [V] block gen + simple buildings
+- finished night
 
 VERSION v02, aka proof of concept 2
 - main goal is to have a city generator with somewhat complete / mock up features ready
@@ -10,11 +11,12 @@ VERSION v02, aka proof of concept 2
 [V] populate streets
 [V] sort bld_rects in blocks: inner or outer
 [V] create placeholders for functions: bld (just boxes, random h)
-[ ] release breaking bugs: 001 + 002
+[V] release breaking bugs: 001 + 002
+[V] migrate to GitHub
+-finished during early hours of 14.11.2018, including git
 
 VERSION v03, stability, clean up, setting up
 - clean up, implement all the little features before attacking buildings etc
-[ ] migrate to GitHub
 [ ] finish primitives: cone, cylinder
 [ ] finish tree generation
 [ ] streets.py is a mess

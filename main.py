@@ -58,7 +58,7 @@ tree_sz_min = 10
 ###########################################################################################
 # internal config
 
-print("Stage 1: Preconfig...")
+print("Initialising...")
 
 __debug = True
 
@@ -81,13 +81,12 @@ if height < block_w_max * 2:
     print("Got:", height, ", but need at least", block_w_max * 2)
     height = block_w_max * 2
 
-# translate([0,0,-5]){{cube([{}, {}, 5]);}}\n".format(width + skirt_size*2, height + skirt_size*2))
 model3d.init("test.stl")
 model3d.cube_2v((0, 0, -board_thickness), (width + skirt_size * 2, height + skirt_size * 2, 0))
 
 ###########################################################################################
 # block generation
-print("Stage 2: Generating blocks...")
+print("Generating city blocks...")
 
 
 def gen_block_and_street():
@@ -155,8 +154,8 @@ for h in blocks_x:
 
         block_areas.append((x1, y1, x2, y2))
 
-print("- generated horisontal blocks:", len(blocks_x))
-print("- generated vertical blocks:", len(blocks_y))
+print("- horisontal blocks:", len(blocks_x))
+print("- vertical blocks:", len(blocks_y))
 print("- total blocks:", len(block_areas))
 
 ###########################################################################################
@@ -168,7 +167,7 @@ streets.generate()
 ###########################################################################################
 # split blocks
 
-print("Stage 3: Splitting blocks into building spaces...")
+print("Dividing blocks into building spaces...")
 
 
 # returns empty list if unable to split
@@ -236,11 +235,11 @@ for b in block_areas:
     building_areas.append(buildings)
     building_areas_cnt += len(buildings)
 
-print("-generated building spaces:", building_areas_cnt)
+print("-total building spaces:", building_areas_cnt)
 
 ###########################################################################################
 # now generating contents
-print("Stage 4: Populating building spaces...")
+print("Populating building spaces...")
 
 if __debug:
     img = np.zeros((int(__board_h), int(__board_w), 3), np.uint8)
@@ -295,16 +294,13 @@ def gen_park(rect):
         potential_trees.pop(idx)
 
 
-# for a in building_areas:
-#	for b in a :
-#		f.write("translate([{}, {}, 0]){{".format(b[0], b[1]))
-#		f.write("cube([{}, {}, {}]);}}\n".format(b[2]-b[0],b[3]-b[1],random.randint(bld_h_min, bld_h_max)))
-
 def gen_building(rect):
+    # TODO this is just a placeholder
     model3d.cube_2dh(rect, height=random.randint(bld_h_min, bld_h_max))
 
+
 for idx,block in enumerate(block_areas):
-    print(block)
+    print("- block", idx+1, "of", len(block_areas))
 
     for bld_area in building_areas[idx]:
         if __debug:
@@ -324,12 +320,8 @@ for idx,block in enumerate(block_areas):
             gen_park(bld_area)
 
 
-print("- Buildings... TODO")
-
-print("Finishing")
+print("Cleaning up...")
 model3d.deinit()
 
 if __debug:
     cv2.imwrite("out_s" + str(seed) + ".png", img)
-
-# generate house classes accordingly
