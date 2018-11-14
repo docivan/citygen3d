@@ -262,17 +262,14 @@ def gen_tree(rect):
         y = rect[1] + diameter / 2.  # TODO in case of float, this will collide trees
         x = random.uniform(rect[0] + diameter / 2., rect[2] - diameter / 2.)
 
-    # ofile.write("cube([{}, {}, {}]);}}\n".format(rect[2]-rect[0],rect[3]-rect[1],10))
-
     if random.random() < tree_pine_ratio:
-        a = 1
-        # TODO - implement!
-        # ofile.write("translate([{}, {}, {}]){{".format(x, y, -diameter/2))
-        # ofile.write("cylinder(h={}, r1=0, r2={}, center=true);}}\n".format(diameter*1.5, diameter/2))
+        model3d.cone((x, y, 0), diameter,
+                     np.random.uniform(settings.settings["tree_sz_min"], settings.settings["tree_sz_max"]))
     else:
-        model3d.sphere((x, y, diameter / 2.), diameter)
-
-    # TODO: stem
+        model3d.sphere((x, y, diameter / 2. * 1.5), diameter)
+        #trunk
+        s = settings.settings["tree_sz_min"] / 4
+        model3d.cube_2v((x-s,y-s,0), (x+s,y+s,diameter))
 
     if __debug:
         # cv2.rectangle(img,(rect[0],rect[1]),(rect[2],rect[3]),

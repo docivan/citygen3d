@@ -138,6 +138,8 @@ def cube_2dh(rect, height=1, z=0):
 
 
 def sphere(c, d, subdiv_xy=10, subdiv_z=5):
+    assert subdiv_xy >= 3
+    assert subdiv_z >= 1
     assert ck_valid_pt(c, dim=3)
     r = d / 2.
 
@@ -184,13 +186,40 @@ def sphere(c, d, subdiv_xy=10, subdiv_z=5):
                  )
 
 
-def cone(c, r1, h, r2=0, subdiv=10):
-    # TODO
-    return 0
+#all primitives below are generated flat in xy plane!
+
+#generates a circle on the xy plane
+def __circle2d_xy(c, d, subdiv=10):
+    assert  subdiv>=3
+
+    r = d/2.
+
+    points = []
+    for radians in np.linspace(0, 2 * math.pi, subdiv, endpoint=False):
+        points.append((c[0] + r * math.cos(radians), c[1] + r * math.sin(radians), c[2]))
+
+    for idx in range(len(points)):
+        triangle(points[idx-1], points[idx], c)
+
+    return points
 
 
-def cylinder(c, r, h, subdiv=10):
-    cone(c, r, h, r2=r, subdiv=subdiv)
+def truncated_cone(c, d1, d2, h, subdiv = 10):
+    lower = __circle2d_xy(c, d1, subdiv)
+    upper = __circle2d_xy((c[0], c[1], c[2]+h), d2, subdiv=subdiv)
+
+    for i in range(subdiv):
+        quad(lower[i-1], lower[i], upper[i], upper[i-1])
+
+
+def cone(c, d, h, subdiv=10):
+    base = __circle2d_xy(c, d, subdiv)
+
+    for i in range(subdiv):
+        triangle(base[i-1], base[i], (c[0], c[1], c[2]+h))
+
+def cylinder(c, d, h, subdiv=10):
+    truncated_cone(c, d, d, h, subdiv=subdiv)
 
 # stlfile = init("test.stl")
 # cube2v((-1,-1,-1), (1,1,1))
@@ -200,3 +229,11 @@ def cylinder(c, r, h, subdiv=10):
 # sphere((0,0,0), 2)
 # cylinder((0,0,0), 2, 5)
 # deinit(stlfile)
+
+# geom testing
+#model3d.sphere((-10,-10,-10), 10, subdiv_xy=3, subdiv_z=1)
+#model3d.cylinder((-5,-10,-10), 10, 5)
+#model3d.cone((-25,-10,-10), 10, 5)
+#model3d.truncated_cone((-50,-10,-10), 10, 5, 5)
+#model3d.cube([(-75,-10,-10), (-80,-10,-10), (-80,-5,-10), (-75,-5,-10),
+#              (-76,-9, -5), (-79, -9, -5), (-79, -6, -5), (-76, -6, -5)])

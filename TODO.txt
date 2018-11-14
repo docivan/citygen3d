@@ -22,17 +22,21 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] finish tree generation
 [ ] streets.py is a mess
 [ ] proper JSON everywhere
-[ ] fix JSON comments, see BUG003
+[V] fix JSON comments, see BUG003
 [ ] instead of awkward for loops with idx in range => do idx, val in enumerate
 [ ] 2d rect should be standardised!
 [ ] move cmp float to utils?
 [ ] using randint for height for example - should be float!
 [ ] debug visualization shoudl reflect
 [ ] refactor main.py file - rename citygen3.py, split, perhaps make __main__ function, etc
+[ ] assert subdivs
+[ ] test blender intersect geometry fix
 
 VERSION v04
 [ ] bld generation
 [ ] proper car generation?
 [ ] trucks on the roads: takes up two spaces and are higher!
+
+[ ] helipad
 
 unsorted:
