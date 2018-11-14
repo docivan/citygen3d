@@ -1,26 +1,33 @@
-TODO for v01, aka proof of concept 2
+VERSION v01, aka proof of concept 1
+- main goal is that a city can be generated and printed
+[V] block gen + simple buildings
+
+VERSION v02, aka proof of concept 2
 - main goal is to have a city generator with somewhat complete / mock up features ready
 [V] edit to make file as global, do not need to pass stlfile
 [V] 3d funcs into utils.py
-[ ] all new files configured through JSON
-[ ] populate streets
-[ ] sort bld_rects in blocks: inner or outer
-[ ] create placeholders for functions: bld (just boxes, random h)
+[V] all new files configured through JSON
+[V] populate streets
+[V] sort bld_rects in blocks: inner or outer
+[V] create placeholders for functions: bld (just boxes, random h)
+[ ] release breaking bugs: 001 + 002
 
-
-TODO for v02
-- clean up, implement all the little features before attacking buildings
+VERSION v03, stability, clean up, setting up
+- clean up, implement all the little features before attacking buildings etc
+[ ] migrate to GitHub
 [ ] finish primitives: cone, cylinder
 [ ] finish tree generation
-[ ] populate streets
+[ ] streets.py is a mess
 [ ] proper JSON everywhere
 [ ] instead of awkward for loops with idx in range => do idx, val in enumerate
 [ ] 2d rect should be standardised!
+[ ] move cmp float to utils?
+[ ] using randint for height for example - should be float!
+[ ] debug visualization shoudl reflect
+[ ] refactor main.py file - rename citygen3.py, split, perhaps make __main__ function, etc
 
-TODO fro v03
+VERSION v04
 [ ] bld generation
 [ ] trucks on the roads: takes up two spaces and are higher!
-
-
 
 unsorted:

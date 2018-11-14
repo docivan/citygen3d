@@ -118,7 +118,7 @@ def gen_blocks(dim):
 
         cur_x = block_to + street
 
-        sts.append((cur_x, street))
+        sts.append((skirt_size + block_to, street))
 
         blocks.append((skirt_size + block_from, skirt_size + block_to))
 
@@ -295,31 +295,38 @@ def gen_park(rect):
         potential_trees.pop(idx)
 
 
-for a in building_areas:
-    for b in a:
-        if __debug:
-            cv2.rectangle(img, (b[0], b[1]), (b[2], b[3]),
-                          (random.randint(0, 254), random.randint(0, 254), random.randint(0, 254)), -1)
-
-        gen_park(b)
-        #TODO inner VS outer
-
 # for a in building_areas:
 #	for b in a :
 #		f.write("translate([{}, {}, 0]){{".format(b[0], b[1]))
 #		f.write("cube([{}, {}, {}]);}}\n".format(b[2]-b[0],b[3]-b[1],random.randint(bld_h_min, bld_h_max)))
 
-# then check which of the rects are entirely surrounded by other rects => cortyard
-# TODO
-# all other rects are facing street and can thus become building
-# TODO
+def gen_building(rect):
+    model3d.cube_2dh(rect, height=random.randint(bld_h_min, bld_h_max))
+
+for idx,block in enumerate(block_areas):
+    print(block)
+
+    for bld_area in building_areas[idx]:
+        if __debug:
+            cv2.rectangle(img, (bld_area[0], bld_area[1]), (bld_area[2], bld_area[3]),
+                          (random.randint(0, 254), random.randint(0, 254), random.randint(0, 254)), -1)
+
+        edge = False
+
+        for i in range(4):
+            if model3d.cmp_float(block[i], bld_area[i]):
+                edge=True
+                break
+
+        if edge:
+            gen_building(bld_area)
+        else:
+            gen_park(bld_area)
+
 
 print("- Buildings... TODO")
 
-print("Stage 5: Final preps")
-
-# create base plate
-# ofile.write("translate([0,0,-5]){{cube([{}, {}, 5]);}}\n".format(width + skirt_size*2, height + skirt_size*2))
+print("Finishing")
 model3d.deinit()
 
 if __debug:

@@ -43,7 +43,7 @@ def ck_valid_pt(*pt, dim):
             return False
 
 
-def cmp_float(f1, f2, error=0.01):
+def cmp_float(f1, f2, error=0.0001):
     if math.fabs(f1 - f2) < error:
         return True
     else:

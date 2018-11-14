@@ -51,7 +51,7 @@ def __gen_car(bound_rect):
                      height=(bound_rect[1][0]-bound_rect[0][0])*settings.settings["car_h_ratio"])
 
     if settings.settings["debug"]:
-        print(bound_rect)
+        #print(bound_rect)
         p1 = (int(bound_rect[0][0]), int(bound_rect[0][1]))
         p2 = (int(bound_rect[1][0]), int(bound_rect[1][1]))
 
