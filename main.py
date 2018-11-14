@@ -311,7 +311,7 @@ for idx,block in enumerate(block_areas):
 
         for i in range(4):
             if model3d.cmp_float(block[i], bld_area[i]):
-                edge=True
+                edge = True
                 break
 
         if edge:

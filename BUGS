@@ -1,2 +1,3 @@
 [V] BUG001 - trees and cars intersect??
 [V] BUG002 - street map looks different from block map
+[V] BUG003 - JSON comments do not work if placed at the end of the line

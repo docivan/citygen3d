@@ -22,6 +22,7 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] finish tree generation
 [ ] streets.py is a mess
 [ ] proper JSON everywhere
+[ ] fix JSON comments, see BUG003
 [ ] instead of awkward for loops with idx in range => do idx, val in enumerate
 [ ] 2d rect should be standardised!
 [ ] move cmp float to utils?
@@ -31,6 +32,7 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 
 VERSION v04
 [ ] bld generation
+[ ] proper car generation?
 [ ] trucks on the roads: takes up two spaces and are higher!
 
 unsorted:

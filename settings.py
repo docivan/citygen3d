@@ -10,4 +10,4 @@ def load(filename):
 
     with open(filename, "r") as f:
         # NB! this will fail if // is contained within a comment
-        settings = json.loads('\n'.join([row for row in f.readlines() if len(row.split('//')) == 1]))
+        settings = json.loads("\n".join(line.split("//")[0].replace("\n", "") for line in f.readlines()))
