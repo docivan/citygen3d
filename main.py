@@ -83,6 +83,8 @@ if height < block_w_max * 2:
 
 model3d.init("test.stl")
 model3d.cube_2v((0, 0, -board_thickness), (width + skirt_size * 2, height + skirt_size * 2, 0))
+#model3d.cubed_sphere((0,0,0), 5)
+#quit()
 
 ###########################################################################################
 # block generation
@@ -266,10 +268,10 @@ def gen_tree(rect):
         model3d.cone((x, y, 0), diameter,
                      np.random.uniform(settings.settings["tree_sz_min"], settings.settings["tree_sz_max"]))
     else:
-        model3d.sphere((x, y, diameter / 2. * 1.5), diameter)
+        model3d.sphere_cubed((x, y, diameter / 2. * 1.5), diameter, ratio = 1./3.)
         #trunk
-        s = settings.settings["tree_sz_min"] / 4
-        model3d.cube_2v((x-s,y-s,0), (x+s,y+s,diameter))
+        s = diameter/2. - diameter/3.
+        model3d.cube_2v((x-s,y-s,0), (x+s,y+s,diameter/4.))
 
     if __debug:
         # cv2.rectangle(img,(rect[0],rect[1]),(rect[2],rect[3]),

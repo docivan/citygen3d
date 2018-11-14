@@ -18,8 +18,8 @@ VERSION v02, aka proof of concept 2
 VERSION v03, stability, clean up, setting up a more solid foundation for later
 - clean up, implement all the little features before attacking buildings etc
 [V] comment stripping from json config file
-[ ] finish primitives: cone, cylinder
-[ ] finish tree generation
+[V] finish primitives: cone, cylinder
+[V] finish tree generation
 [ ] streets.py is a mess
 [ ] proper JSON everywhere
 [V] fix JSON comments, see BUG003
@@ -29,12 +29,17 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] using randint for height for example - should be float!
 [ ] debug visualization shoudl reflect
 [ ] refactor main.py file - rename citygen3.py, split, perhaps make __main__ function, etc
-[ ] assert subdivs
-[ ] test blender intersect geometry fix
+[V] assert subdivs
+[V] test blender intersect geometry fix
+[ ] replace "cube" with "box"
+[ ] cube creation should be cleaned up - not always drawing ccw!!
+[ ] check that all 3d functions have the correct asserts!
+[V] cubed spheres for trees - saving poly count, no impact on quality and saving ourselves from slicing pains
 
 VERSION v04
 [ ] bld generation
 [ ] proper car generation?
+[ ] cars should nonetheless be 3d structures!
 [ ] trucks on the roads: takes up two spaces and are higher!
 
 [ ] helipad

@@ -189,7 +189,7 @@ def sphere(c, d, subdiv_xy=10, subdiv_z=5):
 #all primitives below are generated flat in xy plane!
 
 #generates a circle on the xy plane
-def __circle2d_xy(c, d, subdiv=10):
+def __circle2d_xy(c, d, subdiv=10, invert = False):
     assert  subdiv>=3
 
     r = d/2.
@@ -199,27 +199,84 @@ def __circle2d_xy(c, d, subdiv=10):
         points.append((c[0] + r * math.cos(radians), c[1] + r * math.sin(radians), c[2]))
 
     for idx in range(len(points)):
-        triangle(points[idx-1], points[idx], c)
+        if invert:
+            triangle(points[idx-1], points[idx], c)
+        else:
+            triangle(points[idx], points[idx - 1], c)
 
     return points
 
 
 def truncated_cone(c, d1, d2, h, subdiv = 10):
-    lower = __circle2d_xy(c, d1, subdiv)
-    upper = __circle2d_xy((c[0], c[1], c[2]+h), d2, subdiv=subdiv)
+    lower = __circle2d_xy(c, d1, subdiv=subdiv)
+    upper = __circle2d_xy((c[0], c[1], c[2]+h), d2, subdiv=subdiv, invert=True) # invert btm
 
     for i in range(subdiv):
         quad(lower[i-1], lower[i], upper[i], upper[i-1])
 
 
 def cone(c, d, h, subdiv=10):
-    base = __circle2d_xy(c, d, subdiv)
+    base = __circle2d_xy(c, d, subdiv=subdiv, invert = True) # invert btm
 
     for i in range(subdiv):
         triangle(base[i-1], base[i], (c[0], c[1], c[2]+h))
 
+
 def cylinder(c, d, h, subdiv=10):
     truncated_cone(c, d, d, h, subdiv=subdiv)
+
+
+#this is a stylistic choice, and to avoid the slicing hell of overlapping geometry
+#(or programming mesh booleans ops)
+def sphere_cubed(c, d, ratio = 1./3.):
+    inset = d * ratio
+    main = d * (1 - ratio*2)
+
+    z1 = c[2] - d/2.
+    z2 = z1 + inset
+    z3 = z2 + main
+    z4 = c[2] + d/2.
+
+    x_min = c[0] - d/2.
+    x_max = c[0] + d/2.
+    y_min = c[1] - d/2.
+    y_max = c[1] + d/2.
+
+    x_inset_min = x_min + inset
+    x_inset_max = x_max - inset
+    y_inset_min = y_min + inset
+    y_inset_max = y_max - inset
+
+    cube([
+        (x_inset_min, y_inset_min, z1),
+        (x_inset_max, y_inset_min, z1),
+        (x_inset_max, y_inset_max, z1),
+        (x_inset_min, y_inset_max, z1),
+
+        (x_min, y_min, z2),
+        (x_max, y_min, z2),
+        (x_max, y_max, z2),
+        (x_min, y_max, z2)])
+
+    cube_2v((x_min, y_min, z2), (x_max, y_max, z3))
+
+    cube([
+        (x_min, y_min, z3),
+        (x_max, y_min, z3),
+        (x_max, y_max, z3),
+        (x_min, y_max, z3),
+
+        (x_inset_min, y_inset_min, z4),
+        (x_inset_max, y_inset_min, z4),
+        (x_inset_max, y_inset_max, z4),
+        (x_inset_min, y_inset_max, z4)
+        ])
+
+
+
+
+
+
 
 # stlfile = init("test.stl")
 # cube2v((-1,-1,-1), (1,1,1))
