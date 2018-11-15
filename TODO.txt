@@ -35,13 +35,23 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] cube creation should be cleaned up - not always drawing ccw!!
 [ ] check that all 3d functions have the correct asserts!
 [V] cubed spheres for trees - saving poly count, no impact on quality and saving ourselves from slicing pains
+[ ] trunk ratio as configurable param
+[X] consider complex trees = trunk with expanding cone, then cyl on top, then half-sphere to cap off
+[ ] or just skip the trunk: expanding subdiv trunc cone, then cyl with same subdiv, then half-sphere
+[ ] tree height should be considerably larger
+[ ] complex pine: expanding subdiv trunc cone, then sharp-domed cone
+[ ] for the above: expand cone function to be "lofted" (arbitrary number for rings in z-dir)
+[ ] in addition: "loft" box function with arbitrary number of z-rings
+[ ] __circle2d_xy should envoke 2d circle point generator
+[ ] tree types: complex cone, cyl w half-sphere on top, cyl w/o sphere, cubed sphere as now
 
 VERSION v04
 [ ] bld generation
 [ ] proper car generation?
 [ ] cars should nonetheless be 3d structures!
 [ ] trucks on the roads: takes up two spaces and are higher!
-
+[ ] cars turning?
 [ ] helipad
+[ ] gen height map while making buildings -
 
 unsorted:

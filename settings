@@ -1,15 +1,39 @@
 {
     //#######################################
     //general settings:
-    "width":                1200, //units??
-    "height":               1200,
+    "width":                    1200, //current print scaling: is that this is printed at 20%
+    "height":                   1200,
 
     //#######################################
-    "bld_helipads":         1, // how many to generate
+    "bld_sq_min":               2,  // minimum size of a structural elem
+    "bld_h_min":                10,
+    "bld_h_max":                20,
+
+    "bld_pyramid_prob":         0.5,
+    "bld_pyramid_box_cnt_min":  2,
+    "bld_pyramid_box_cnt_max":  5,
+
+    "bld_boxy_prob":            0.5,
+    //"test": [0.5, 1.0, 0.5, 0.2, 0.]
+
+
+    "bld_boxy_base_prob":       0.5,
+    "bld_boxy_base_step_max":   0.05,
+    "bld_boxy_base_h_max":      0.1,
+
+    "bld_boxy_top1_prob":       0.5,
+    "bld_boxy_top1_step_max":   0.05,
+    "bld_boxy_top1_h_max":      0.05,
+
+    "bld_boxy_top2_prob":       0.2,
+    "bld_boxy_top2_step_max":   0.03,
+    "bld_boxy_top2_h_max":      0.02,
+
+    "bld_helipads":             1, // how many to generate
 
     //#######################################
-    "tree_sz_max":          20,
-    "tree_sz_min":          10,
+    "tree_sz_max":              20,
+    "tree_sz_min":              10,
 
     //#######################################
     //street settings
@@ -18,13 +42,13 @@
 
     //#######################################
     //car settings
-    "car_prob_min":         0,
-    "car_prob_max":         1,
+    "car_prob_min":             0,
+    "car_prob_max":             1,
 
-    "car_l_min":            3,
-    "car_l_max":            6,
-    "car_h_ratio":          0.5,
+    "car_l_min":                3,
+    "car_l_max":                6,
+    "car_h_ratio":              0.5,
 
     //#######################################
-    "debug":                "True"
+    "debug":                    "True"
 }

@@ -7,6 +7,7 @@ import sys
 import model3d
 import streets
 import settings
+import buildings
 
 
 if len(sys.argv) != 2:
@@ -233,9 +234,9 @@ building_areas = []
 building_areas_cnt = 0
 
 for b in block_areas:
-    buildings = split_rect(b, bld_s_min, bld_s_max)
-    building_areas.append(buildings)
-    building_areas_cnt += len(buildings)
+    blds = split_rect(b, bld_s_min, bld_s_max)
+    building_areas.append(blds)
+    building_areas_cnt += len(blds)
 
 print("-total building spaces:", building_areas_cnt)
 
@@ -268,9 +269,9 @@ def gen_tree(rect):
         model3d.cone((x, y, 0), diameter,
                      np.random.uniform(settings.settings["tree_sz_min"], settings.settings["tree_sz_max"]))
     else:
-        model3d.sphere_cubed((x, y, diameter / 2. * 1.5), diameter, ratio = 1./3.)
+        model3d.sphere_cubed((x, y, diameter / 2. * 1.5), diameter, ratio = 1./3./2.)
         #trunk
-        s = diameter/2. - diameter/3.
+        s = diameter/2. - diameter/3./2.
         model3d.cube_2v((x-s,y-s,0), (x+s,y+s,diameter/4.))
 
     if __debug:
@@ -297,6 +298,7 @@ def gen_building(rect):
     # TODO this is just a placeholder
     model3d.cube_2dh(rect, height=random.randint(bld_h_min, bld_h_max))
 
+bld_areas = []
 
 for idx,block in enumerate(block_areas):
     print("- block", idx+1, "of", len(block_areas))
@@ -314,13 +316,16 @@ for idx,block in enumerate(block_areas):
                 break
 
         if edge:
-            gen_building(bld_area)
+            bld_areas.append(bld_area)
         else:
             gen_park(bld_area)
+
+
+buildings.generate(bld_areas)
 
 
 print("Cleaning up...")
 model3d.deinit()
 
 if __debug:
-    cv2.imwrite("out_s" + str(seed) + ".png", img)
+    cv2.imwrite("bld_areas.png", img)
