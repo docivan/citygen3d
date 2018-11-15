@@ -14,20 +14,9 @@
     "bld_pyramid_box_cnt_max":  5,
 
     "bld_boxy_prob":            0.5,
-    //"test": [0.5, 1.0, 0.5, 0.2, 0.]
-
-
-    "bld_boxy_base_prob":       0.5,
-    "bld_boxy_base_step_max":   0.05,
-    "bld_boxy_base_h_max":      0.1,
-
-    "bld_boxy_top1_prob":       0.5,
-    "bld_boxy_top1_step_max":   0.05,
-    "bld_boxy_top1_h_max":      0.05,
-
-    "bld_boxy_top2_prob":       0.2,
-    "bld_boxy_top2_step_max":   0.03,
-    "bld_boxy_top2_h_max":      0.02,
+    "bld_boxy_segm_prob":       [0.5,  1.0,  0.5,  0.2,  0.1],
+    "bld_boxy_segm_step_max":   [0.0, 0.05, 0.03, 0.02, 0.01],
+    "bld_boxy_segm_h_max":      [0.1, -1.0, 0.05, 0.03, 0.03], // -1 means fill the rest, can be only one
 
     "bld_helipads":             1, // how many to generate
 

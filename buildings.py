@@ -1,5 +1,7 @@
 import numpy as np
+
 import settings
+import model3d
 
 __UP = 1
 __DOWN = 2
@@ -12,75 +14,97 @@ def __gen_roof_decor(roof_rect):
     return
 
 
-# ((ratio, h_ratio))
-# all relative
+# ((s_ratio, h_ratio)) - all relative; notes:
+# s_ratio is rel to the longest side; it is the scaled to be uniform for short side
+# s_ratio denotes INDENT from the outsiden inwards of each block!
+# h_ratio is rel to height
 def __gen_bld_elem_style():
     style = []
 
-    base = 0
-    top1 = 0
-    top2 = 0
+    expander_idx = -1
 
-    if np.random.uniform() < settings.settings["bld_boxy_base_prob"]:
-        base = np.random.uniform(0, settings.settings["bld_boxy_base_h_max"])
-    if np.random.uniform() < settings.settings["bld_boxy_top1_prob"]:
-        top1 = np.random.uniform(0, settings.settings["bld_boxy_top1_h_max"])
+    for idx,prob in enumerate(settings.settings["bld_boxy_segm_prob"]):
+        if np.random.uniform() < prob:
+            if np.random.uniform(0, settings.settings["bld_boxy_segm_h_max"][idx]) < 0:
+                expander_idx = idx
+                continue
 
-        if np.random.uniform() < settings.settings["bld_boxy_top2_prob"]:
-            top2 = np.random.uniform(0, settings.settings["bld_boxy_top2_h_max"])
+            style.append((np.random.uniform(0, settings.settings["bld_boxy_segm_step_max"][idx]),
+                          np.random.uniform(0, settings.settings["bld_boxy_segm_h_max"][idx])))
 
-    mid = 1 - (base + top1 + top2)
+    if expander_idx != -1:
+        h_rest = 1.
+        for (s_ratio, h_ratio) in style:
+            h_rest -= h_ratio
 
-    if base > 0:
-        style.append((1., base))
-        style.append((np.random.uniform(0, settings.settings["bld_boxy_base_step_max"]), mid))
-    else:
-        style.append((1., mid))
-
-    if top1 > 0:
-        if top2 > 0:
-
-            top2_offset = np.random.uniform((0, (top1-top2)))
-            #top1_ratio =
-
-            style.append((np.random.uniform(0, settings.settings["bld_boxy_top1_step_max"]), top2_offset))
-            style.append((np.random.uniform(0, settings.settings["bld_boxy_top2_step_max"]), top2))
-            style.append((np.random.uniform(0, settings.settings["bld_boxy_top1_step_max"]), top1 - top2 - top2_offset))
-        else:
-            style.append((np.random.uniform(0, settings.settings["bld_boxy_top1_step_max"]), top1))
+        style.insert(expander_idx, (np.random.uniform(0, settings.settings["bld_boxy_segm_step_max"][idx]), h_rest))
 
     return style
 
 
-def __render_bld(base_rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
+def __render_segm(rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
     assert len(sides) > 0
     assert len(sides) <= 4
+    assert z2>z1
+
+    #long_side = max(abs(rect[0] - rect[2]), abs(rect[1] - rect[3]))
+    short_side = min(abs(rect[0] - rect[2]), abs(rect[1] - rect[3]))
+
+    for s in style:
+        segm_rect = []
+        cumul_z = z1
+
+        for i in range(4):
+            segm_rect.append(rect[i] + short_side * s[0])
+
+        model3d.cube_2dh(segm_rect, height=(z2-z1)*s[1], z=cumul_z)
+        cumul_z += (z2-z1)*s[1]
 
     # TODO
-
-    return
+    if __UP in sides:
+        a=0
+        #render
+    #... etc for all sides!
 
 
 def __gen_bld_pyramid(rect, h):
     box_cnt = np.random.randint(settings.settings["bld_pyramid_box_cnt_min"], settings.settings["bld_pyramid_box_cnt_max"])
 
     zcoords = []
-    widths = []
+    widths = [1.]
+
+    #long_side = max(abs(rect[0]-rect[2]), abs(rect[1]-rect[3]))
+    short_side = min(abs(rect[0]-rect[2]), abs(rect[1]-rect[3]))
 
     for i in range(box_cnt - 1):
         zcoords.append(np.random.uniform(settings.settings["bld_sq_min"], h))
-        widths.append(np.random.uniform())  # fraction of base size
+
+        # fraction of base size
+        widths.append( np.random.uniform((np.random.uniform(settings.settings["bld_sq_min"])/short_side),
+                                         1.-box_cnt*0.05 + i*0.05) )
 
     zcoords.sort()
     widths.sort(reverse=True)
 
+    #print(zcoords)
+    #print(widths)
+    #print("bld")
+
     # generate boxes
-    # TODO should be in a sep. function: facade decor (lines / stripes / ledges +++)
-    __render_bld((1, 2, 3), 0, 10, __gen_bld_elem_style())
+    for idx,z in enumerate(zcoords):
+        w_abs = short_side * widths[idx]
+        segm_rect = (rect[0] + w_abs, rect[1] + w_abs, rect[2] - w_abs, rect[3] - w_abs)
 
-    # generate roof decor
+        zprev = zcoords[idx-1]
+        if idx == 0:
+            zprev = 0
 
-    return
+        model3d.cube_2dh(segm_rect, height=z*h, z=zprev)
+
+        #__render_segm(segm_rect, zprev, z*h, __gen_bld_elem_style())
+
+    # TODO facade decor (lines / stripes +++)
+    # TODO generate roof decor
 
 
 def __gen_bld_boxy(rect, h):
