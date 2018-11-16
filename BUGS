@@ -1,4 +1,7 @@
-[V] BUG001 - trees and cars intersect??
-[V] BUG002 - street map looks different from block map
-[V] BUG003 - JSON comments do not work if placed at the end of the line
-[V] BUG004 - bottom of cone is inverted
+[V] BUG01 - trees and cars intersect??
+[V] BUG02 - street map looks different from block map
+[V] BUG03 - JSON comments do not work if placed at the end of the line
+[V] BUG04 - bottom of cone is inverted
+[ ] BUG05 - pyramid buildings will fail to generate if box min/max cnt is [1,1] or [1,2]
+[ ] BUG06 - pyramid generates buildings beyond bld_h_max
+[ ] BUG07 - there seem to be empty spaces??
