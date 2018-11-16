@@ -5,3 +5,5 @@
 [ ] BUG05 - pyramid buildings will fail to generate if box min/max cnt is [1,1] or [1,2]
 [ ] BUG06 - pyramid generates buildings beyond bld_h_max
 [ ] BUG07 - there seem to be empty spaces??
+[ ] BUG08 - roof glitch?
+[ ] BUG09 - thin pyramids?
