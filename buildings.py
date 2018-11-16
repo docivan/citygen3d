@@ -39,8 +39,6 @@ def __gen_bld_elem_style():
 
         style.insert(expander_idx, (np.random.uniform(0, settings.settings["bld_boxy_segm_step_max"][idx]), h_rest))
 
-    print(style)
-
     return style
 
 
@@ -49,7 +47,6 @@ def __render_segm(rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
     assert len(sides) <= 4
     assert z2>z1
 
-    #long_side = max(abs(rect[0] - rect[2]), abs(rect[1] - rect[3]))
     short_side = min(abs(rect[0] - rect[2]), abs(rect[1] - rect[3]))
     cumul_z = z1
 
@@ -59,7 +56,6 @@ def __render_segm(rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
 
         model3d.cube_2dh(segm_rect, height=(z2-z1)*s[1], z=cumul_z)
         cumul_z += (z2-z1)*s[1]
-        print(cumul_z)
 
     # TODO
     if __UP in sides:
@@ -71,15 +67,14 @@ def __render_segm(rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
 def __gen_bld_pyramid(rect, h):
     box_cnt = np.random.randint(settings.settings["bld_pyramid_box_cnt_min"], settings.settings["bld_pyramid_box_cnt_max"])
 
+    # TODO this should be done the same way as the above segment gen/rndr
     zcoords = []
     widths = []
 
-    #long_side = max(abs(rect[0]-rect[2]), abs(rect[1]-rect[3]))
     short_side = min(abs(rect[0]-rect[2]), abs(rect[1]-rect[3]))
 
     for i in range(box_cnt - 1):
         zcoords.append(np.random.uniform(settings.settings["bld_sq_min"], h))
-
         # fraction of base size
         widths.append( np.random.uniform((np.random.uniform(settings.settings["bld_sq_min"])/short_side),
                                          1.-box_cnt*0.05 + i*0.05) )
@@ -87,30 +82,26 @@ def __gen_bld_pyramid(rect, h):
     zcoords.sort()
     widths.sort(reverse=True)
 
-    #print(zcoords)
-    #print(widths)
-    #print("bld")
-
     # generate boxes
     for idx,z in enumerate(zcoords):
         w_abs = (short_side - short_side * widths[idx])/2
+
         assert w_abs * 2 < abs(rect[0] - rect[2])
-        #if w_abs * 2 >= abs(rect[0] - rect[2]):
-            #print("0-2:", w_abs * 2, abs(rect[0] - rect[2]))
         assert w_abs * 2 < abs(rect[1] - rect[3])
-        #if w_abs * 2 >= abs(rect[1] - rect[3]):
-            #print("1-3:", w_abs * 2, abs(rect[1] - rect[3]))
+
         segm_rect = (rect[0] + w_abs, rect[1] + w_abs, rect[2] - w_abs, rect[3] - w_abs)
 
         zprev = h*zcoords[idx-1]
         if idx == 0:
             zprev = 0
 
-        #model3d.cube_2dh(segm_rect, height=z*h, z=zprev)
         __render_segm(segm_rect, zprev, z*h, __gen_bld_elem_style())
 
     # TODO facade decor (lines / stripes +++)
     # TODO generate roof decor
+    # -- antennae
+    # -- helipad
+    # -- garden!
 
 
 def __gen_bld_boxy(rect, h):
@@ -126,7 +117,3 @@ def generate(bld_areas):
             __gen_bld_pyramid(a, np.random.uniform(settings.settings["bld_h_min"], settings.settings["bld_h_max"]))
         else:
             __gen_bld_boxy(a, np.random.uniform(settings.settings["bld_h_min"], settings.settings["bld_h_max"]))
-        # elif p < (settings["bld_pyramid_prob"]+settings["bld_boxy_prob"])
-
-
-#generate([(1, 2, 2), (4, 5, 6)])

@@ -27,7 +27,7 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] 2d rect should be standardised!
 [ ] move cmp float to utils?
 [ ] using randint for height for example - should be float!
-[ ] debug visualization shoudl reflect
+[ ] debug visualization: separate functions
 [ ] refactor main.py file - rename citygen3.py, split, perhaps make __main__ function, etc
 [V] assert subdivs
 [V] test blender intersect geometry fix
@@ -44,6 +44,7 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] in addition: "loft" box function with arbitrary number of z-rings
 [ ] __circle2d_xy should envoke 2d circle point generator
 [ ] tree types: complex cone, cyl w half-sphere on top, cyl w/o sphere, cubed sphere as now
+[ ] the two generators in buildings.py should be using the same architecture, not 2 diff approaches
 
 VERSION v04
 [ ] bld generation
