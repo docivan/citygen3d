@@ -132,7 +132,7 @@ def cube_2dh(rect, height=1, z=0):
     assert len(rect) == 4
 
     v1 = (rect[0], rect[1], z)
-    v2 = (rect[2], rect[3], height)
+    v2 = (rect[2], rect[3], z+height)
 
     cube_2v(v1, v2)
 
