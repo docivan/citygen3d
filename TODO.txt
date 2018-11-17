@@ -50,7 +50,7 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] custom distrib function (bilinear? = x^2 function with cutoff where it crosses x-axis)
 [V] custom distrib function
 [ ] fully implement exp distrib, right now just a stub - implement cutoff!
-[ ] PRI! facade decor
+[V] PRI! facade decor
 [ ] if continue development: min structural elem size should be enforced, also for ledges!
 [V] bld generation
 [V] proper car generation?
