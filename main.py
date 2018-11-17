@@ -17,46 +17,6 @@ if len(sys.argv) != 2:
 settings.load(sys.argv[1])
 
 ###########################################################################################
-# config, sizes in m
-# should at some point be transferred to a json encoded config file
-width = 1200.
-height = 1200.
-seed = 12345
-
-board_thickness = 5  # NB! units?!?
-skirt_size = 10  # m
-
-main_st_prob = 0.2
-main_st_w_min = 80
-main_st_w_max = 100
-
-small_st_w_min = 20
-small_st_w_max = 40
-
-block_w_min = 100
-block_w_max = 300
-
-# building settings
-
-bld_h_min = 6
-bld_h_max = 300
-
-bld_s_min = 30
-bld_s_max = 300
-
-# TODO!
-
-
-# park settings
-
-park_replaces_bld_prob = 0.05  # probability that a park square will replace a building
-tree_pine_ratio = 0.5
-tree_fill_min = 0.2  # % of space filled with trees
-tree_fill_max = 0.8
-tree_sz_max = 20
-tree_sz_min = 10
-
-###########################################################################################
 # internal config
 
 print("Initialising...")
@@ -66,24 +26,26 @@ __debug = True
 __disp_img_w = 800.
 __disp_img_h = 800.
 
-__board_w = width + skirt_size * 2
-__board_h = height + skirt_size * 2
+__board_w = settings.settings["width"] + settings.settings["skirt_size"] * 2
+__board_h = settings.settings["height"] + settings.settings["skirt_size"] * 2
 
-random.seed(seed)
-np.random.seed(seed)
+random.seed(settings.settings["seed"])
+np.random.seed(settings.settings["seed"])
 
-if width < block_w_max * 2:
+if settings.settings["width"] < settings.settings["block_w_max"] * 2:
     print("WARNING! Board width should be at least twice the block width. Changed to minimum value.")
-    print("Got:", width, ", but need at least", block_w_max * 2)
-    width = block_w_max * 2
+    print("Got:", settings.settings["width"], ", but need at least", settings.settings["block_w_max"] * 2)
+    settings.settings["width"] = settings.settings["block_w_max"] * 2
 
-if height < block_w_max * 2:
+if settings.settings["height"] < settings.settings["block_w_max"] * 2:
     print("WARNING! Board height should be at least twice the block width. Changed to minimum value.")
-    print("Got:", height, ", but need at least", block_w_max * 2)
-    height = block_w_max * 2
+    print("Got:", settings.settings["height"], ", but need at least", settings.settings["block_w_max"] * 2)
+    settings.settings["height"] = settings.settings["block_w_max"] * 2
 
 model3d.init("output.stl")
-model3d.cube_2v((0, 0, -board_thickness), (width + skirt_size * 2, height + skirt_size * 2, 0))
+model3d.cube_2v((0, 0, -settings.settings["board_thickness"]),
+                (settings.settings["width"] + settings.settings["skirt_size"] * 2, settings.settings["height"] +
+                 settings.settings["skirt_size"] * 2, 0))
 
 
 ###########################################################################################
@@ -93,13 +55,13 @@ print("Generating city blocks...")
 
 def gen_block_and_street():
     # gen random block size + streed size
-    block = random.randint(block_w_min, block_w_max)
+    block = random.randint(settings.settings["block_w_min"], settings.settings["block_w_max"])
 
     street = 0
-    if random.random() < main_st_prob:
-        street = random.randint(main_st_w_min, main_st_w_max)
+    if random.random() < settings.settings["main_st_prob"]:
+        street = random.randint(settings.settings["main_st_w_min"], settings.settings["main_st_w_max"])
     else:
-        street = random.randint(small_st_w_min, small_st_w_max)
+        street = random.randint(settings.settings["small_st_w_min"], settings.settings["small_st_w_max"])
 
     return block, street
 
@@ -119,19 +81,20 @@ def gen_blocks(dim):
 
         cur_x = block_to + street
 
-        sts.append((skirt_size + block_to, street))
+        sts.append((settings.settings["skirt_size"] + block_to, street))
 
-        blocks.append((skirt_size + block_from, skirt_size + block_to))
+        blocks.append((settings.settings["skirt_size"] + block_from, settings.settings["skirt_size"] + block_to))
 
         # allocate the remaining space to the last block
         if last_one:
-            blocks.append((skirt_size + cur_x, skirt_size + dim))
+            blocks.append((settings.settings["skirt_size"] + cur_x, settings.settings["skirt_size"] + dim))
             # print((skirt_size + cur_x, skirt_size + dim))
             break
 
-        if not last_one and (dim - cur_x) < (block_w_max + block_w_min + main_st_w_max):
-            if (dim - cur_x) < block_w_max and (dim - cur_x) > block_w_min:
-                blocks.append((skirt_size + cur_x, skirt_size + dim))
+        if not last_one and (dim - cur_x) < (settings.settings["block_w_max"] + settings.settings["block_w_min"] +
+                                             settings.settings["main_st_w_max"]):
+            if (dim - cur_x) < settings.settings["block_w_max"] and (dim - cur_x) > settings.settings["block_w_min"]:
+                blocks.append((settings.settings["skirt_size"] + cur_x, settings.settings["skirt_size"] + dim))
                 break
             else:
                 last_one = True
@@ -141,8 +104,8 @@ def gen_blocks(dim):
 # generate grid:
 # - number of horiz streets
 
-blocks_x, streets.streets_x = gen_blocks(width)
-blocks_y, streets.streets_y = gen_blocks(height)
+blocks_x, streets.streets_x = gen_blocks(settings.settings["width"])
+blocks_y, streets.streets_y = gen_blocks(settings.settings["height"])
 
 # recode into something sensible
 block_areas = []
@@ -233,7 +196,7 @@ building_areas = []
 building_areas_cnt = 0
 
 for b in block_areas:
-    blds = split_rect(b, bld_s_min, bld_s_max)
+    blds = split_rect(b, settings.settings["bld_s_min"], settings.settings["bld_s_max"])
     building_areas.append(blds)
     building_areas_cnt += len(blds)
 
@@ -264,7 +227,7 @@ def gen_tree(rect):
         y = rect[1] + diameter / 2.  # TODO in case of float, this will collide trees
         x = random.uniform(rect[0] + diameter / 2., rect[2] - diameter / 2.)
 
-    if random.random() < tree_pine_ratio:
+    if random.random() < settings.settings["tree_pine_ratio"]:
         model3d.cone((x, y, 0), diameter,
                      np.random.uniform(settings.settings["tree_sz_min"], settings.settings["tree_sz_max"]))
     else:
@@ -280,9 +243,9 @@ def gen_tree(rect):
 
 
 def gen_park(rect):
-    potential_trees = split_rect(rect, tree_sz_min, tree_sz_max)
+    potential_trees = split_rect(rect, settings.settings["tree_sz_min"], settings.settings["tree_sz_max"])
 
-    fill = random.uniform(tree_fill_min, tree_fill_max)
+    fill = random.uniform(settings.settings["tree_fill_min"], settings.settings["tree_fill_max"])
     tree_cnt = int(math.floor(len(potential_trees) * fill))
 
     # print("Park:", tree_cnt, "of", len(potential_trees), "used")
@@ -295,7 +258,7 @@ def gen_park(rect):
 
 def gen_building(rect):
     # TODO this is just a placeholder
-    model3d.cube_2dh(rect, height=random.randint(bld_h_min, bld_h_max))
+    model3d.cube_2dh(rect, height=random.randint(settings.settings["bld_h_min"], settings.settings["bld_h_max"]))
 
 bld_areas = []
 

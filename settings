@@ -1,11 +1,44 @@
 {
     //#######################################
+    //sizes are thought as approx meters
+
     //general settings:
-    "width":                    1200, //current print scaling: is that this is printed at 15%
+    "width":                    1200,
     "height":                   1200,
+    "print_scaling_factor":     0.15,
+
+    "seed":                     12345,
+
+    "board_thickness":          5,
+    "skirt_size":               10,
+
+    //#######################################
+    "main_st_prob":             0.2,
+    "main_st_w_min":            50,
+    "main_st_w_max":            60,
+
+    "small_st_w_min":           20,
+    "small_st_w_max":           40,
+
+    "block_w_min":              100,
+    "block_w_max":              200,
+
+    //#######################################
+    // park settings
+
+    "park_replaces_bld_prob":   0.0,  // probability that a park square will replace a building
+    "tree_pine_ratio":          0.5,
+    "tree_fill_min":            0.2,  // % of space filled with trees
+    "tree_fill_max":            0.8,
+    "tree_sz_max":              20,
+    "tree_sz_min":              10,
 
     //#######################################
     "bld_sq_min":               2,  // minimum size of a structural elem
+
+    "bld_s_min":                30,
+    "bld_s_max":                300,
+
     "bld_h_min":                100,
     "bld_h_max":                200,
 

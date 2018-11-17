@@ -54,7 +54,8 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] if continue development: min structural elem size should be enforced, also for ledges!
 [V] bld generation
 [V] proper car generation?
-
+[ ] rename style with profile
+[ ] a way to calib min resolution?
 
 VERSION v04
 [ ] cars should nonetheless be 3d structures!
