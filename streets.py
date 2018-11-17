@@ -19,10 +19,8 @@ __DOWN = 1
 __img = []
 
 #assumes dir = up => thus flip if not
-def __gen_car_lane(x, y1, y2, flip) : #, dir = __UP):
-    # TODO follow exponential function
-    # this means: generate grid, fill according to probability (exp)
-    # then jitter by (0, car_max_w/w)
+def __gen_car_lane(x, y1, y2, flip):
+    # jitter by (0, car_max_w/w) ??
     # -- for loop with up to f.ex. 10 attempts at jitter, if fail = abandom
 
     cars = []
@@ -47,10 +45,8 @@ def __gen_car_lane(x, y1, y2, flip) : #, dir = __UP):
     return cars
 
 def __gen_car(bound_rect):
-    # TODO - 3d
-
     ratio = (settings.settings["car_l_max"] - settings.settings["car_l_min"]) / settings.settings["car_l_max"] \
-            *np.random.uniform() # 1 - utils.distrib_exp())
+            * np.random.uniform()
 
     model3d.cube_2dh((bound_rect[0][0] + (bound_rect[1][0] - bound_rect[0][0]) * ratio,
                       bound_rect[0][1] + (bound_rect[1][1] - bound_rect[0][1]) * ratio,
@@ -59,7 +55,6 @@ def __gen_car(bound_rect):
                      height=(bound_rect[1][0]-bound_rect[0][0])*settings.settings["car_h_ratio"])
 
     if settings.settings["debug"]:
-        #print(bound_rect)
         p1 = (int(bound_rect[0][0]), int(bound_rect[0][1]))
         p2 = (int(bound_rect[1][0]), int(bound_rect[1][1]))
 
@@ -71,11 +66,6 @@ def __gen_st(rect, dir=__VERT):
     if dir == __HORIZ: # flip x and y
         st_rect = ((rect[0][1], rect[0][0]), (rect[1][1], rect[1][0]))
 
-    # TODO split rect into 2x number of lanes, x in each direction
-    # TODO get settings from lane width and side walk params
-
-    # for now, only 2 lanes no matter what
-    midlane_div = (st_rect[1][0]-st_rect[0][0]) / 3.
     w = settings.settings["car_lane_w"]
 
     lane_cnt = (st_rect[1][0] - st_rect[0][0] - 2*w) / w
