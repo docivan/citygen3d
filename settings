@@ -13,6 +13,7 @@
     "skirt_size":               10,
 
     //#######################################
+    // street settings
     "main_st_prob":             0.2,
     "main_st_w_min":            50,
     "main_st_w_max":            60,
@@ -34,6 +35,8 @@
     "tree_sz_min":              10,
 
     //#######################################
+    // buildings
+
     "bld_sq_min":               2,  // minimum size of a structural elem
 
     "bld_s_min":                30,
@@ -52,6 +55,10 @@
     "bld_boxy_segm_step_max":   [0.0, 0.2, 0.15, 0.12, 0.10],
     "bld_boxy_segm_h_max":      [0.1, -1.0, 0.1, 0.5, 0.03], // -1 = expander, only 1 allowed
 
+    "bld_facade_stripes_prob":  1,
+    "bld_facade_stripes_min":   2,
+    "bld_facade_stripes_max":   10,
+
     //#######################################
     //roof decor
 
@@ -62,6 +69,8 @@
 
     "bld_roof_cone_prob":       0.1,
     "bld_roof_cone_h_ratio":    0.05,
+
+    "bld_roof_garden":          0.7,
 
     //#######################################
     // tree settings

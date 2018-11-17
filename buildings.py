@@ -1,7 +1,9 @@
 import numpy as np
+import math
 
 import settings
 import model3d
+import parks
 import utils
 
 __UP = 1
@@ -45,13 +47,11 @@ def __gen_antenna(rect, z):
 
 
 def __gen_roof_decor(roof_rect, z):
-    p = np.random.uniform()
-    if p < settings.settings["bld_roof_ant_prob"]:
+    if np.random.uniform() < settings.settings["bld_roof_ant_prob"]:
         __gen_antenna(roof_rect, z)
         return
 
-    p = np.random.uniform()
-    if p < settings.settings["bld_roof_cone_prob"]:
+    if np.random.uniform() < settings.settings["bld_roof_cone_prob"]:
         # TODO this should really use the actual rect as directed by style!
         model3d.pyramid([roof_rect[0] + (roof_rect[2] - roof_rect[0]) * settings.settings["bld_pyramid_step_max"],
                          roof_rect[1] + (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"],
@@ -59,6 +59,18 @@ def __gen_roof_decor(roof_rect, z):
                          roof_rect[3] - (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"]],
                         z*settings.settings["bld_roof_cone_h_ratio"], z=z)
         return
+
+    treespaces = math.floor((roof_rect[2] - roof_rect[0]) / settings.settings["tree_sz_max"]) *\
+                 math.floor((roof_rect[3] - roof_rect[1]) / settings.settings["tree_sz_max"])
+
+    if treespaces>=4 and np.random.uniform() < settings.settings["bld_roof_garden"]:
+        # TODO this should really use the actual rect as directed by style!
+        parks.gen_park(roof_rect, z=z)
+        #parks.gen_park([roof_rect[0] + (roof_rect[2] - roof_rect[0]) * settings.settings["bld_pyramid_step_max"],
+        #                 roof_rect[1] + (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"],
+        #                 roof_rect[2] - (roof_rect[2] - roof_rect[0]) * settings.settings["bld_pyramid_step_max"],
+        #                 roof_rect[3] - (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"]], z=z)
+
 
 
 
@@ -98,6 +110,9 @@ def __render_segm(rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
     short_side = min(abs(rect[0] - rect[2]), abs(rect[1] - rect[3]))
     cumul_z = z1
 
+    max_offset = 0
+    max_offset_rect = []
+
     for s in style:
         w_abs = short_side * s[0]
         segm_rect = list(rect)
@@ -112,7 +127,36 @@ def __render_segm(rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
             segm_rect[2] -= w_abs
 
         model3d.cube_2dh(segm_rect, height=(z2-z1)*s[1], z=cumul_z)
+
+        #this basically finds the main block of the building segment for decor drawing elsewhere
+        if w_abs > max_offset:
+            max_offset = w_abs
+            max_offset_rect = [segm_rect[0], segm_rect[1], cumul_z, segm_rect[2], segm_rect[3], cumul_z + (z2-z1)*s[1]]
+
         cumul_z += (z2-z1)*s[1]
+
+    p = np.random.uniform()
+    if p < settings.settings["bld_facade_stripes_prob"]:
+        #vertical, HACK
+        if np.random.uniform() < 1:
+            stripe_cnt = np.random.randint(settings.settings["bld_facade_stripes_min"],
+                                           settings.settings["bld_facade_stripes_max"])
+
+            if np.random.uniform() < 0.5:
+                stripe_w = (max_offset_rect[3] - max_offset_rect[0]) / (stripe_cnt*2+1)
+
+                for i in range(stripe_cnt):
+                    x = rect[0] + stripe_w + stripe_w*2*i
+                    model3d.cube_2dh(
+                        [x, rect[1], x + stripe_w, max_offset_rect[1]],
+                        height=(max_offset_rect[5]-max_offset_rect[2]), z = max_offset_rect[2])
+                    #TODO - the other side!
+            else:
+                a = 0
+                # TODO the other two sides
+        else:
+            a=0
+            #TODO horisontal
 
 
 def __gen_bld_pyramid(rect, h):
@@ -149,16 +193,16 @@ def __gen_bld_pyramid(rect, h):
         if idx == 0:
             zprev = 0
 
-        __render_segm(segm_rect, zprev, z, __gen_bld_elem_style())
+        style = __gen_bld_elem_style()
+        __render_segm(segm_rect, zprev, z, style)
 
     # best option would to code function __get_style_elem_rects (base_rect, style, elem_id)
+    # OR just save the last segm highest offset in the loop above
     __gen_roof_decor(segm_rect, zcoords[-1])
 
     # TODO facade decor (lines / stripes +++)
-    # TODO generate roof decor
-    # -- antennae
-    # -- helipad
-    # -- garden!
+    # -- helipad?
+    # TODO garden!
 
 def generate(bld_areas):
     print("Generating buildings...")

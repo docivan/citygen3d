@@ -44,7 +44,7 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] in addition: "loft" box function with arbitrary number of z-rings
 [ ] __circle2d_xy should envoke 2d circle point generator
 [ ] tree types: complex cone, cyl w half-sphere on top, cyl w/o sphere, cubed sphere as now
-[ ] the two generators in buildings.py should be using the same architecture, not 2 diff approaches
+[X] the two generators in buildings.py should be using the same architecture, not 2 diff approaches
 [V] PRI!! building segm render should be able to gen WESN segments (facades?!?)
 [ ] above should be solved by: which sides to gen? and which subdiv to use
 [ ] custom distrib function (bilinear? = x^2 function with cutoff where it crosses x-axis)
@@ -55,7 +55,8 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [V] bld generation
 [V] proper car generation?
 [ ] rename style with profile
-[ ] a way to calib min resolution?
+[V] a way to calib min resolution?
+[ ] operations on rects (like width and height) should be defined in model3d or utils
 
 VERSION v04
 [ ] cars should nonetheless be 3d structures!
