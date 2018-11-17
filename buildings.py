@@ -150,7 +150,17 @@ def __gen_bld_pyramid(rect, h):
 def generate(bld_areas):
     print("Generating buildings...")
     for idx, a in enumerate(bld_areas):
-        # TODO height map
         print("- building", idx+1, "of", len(bld_areas))
 
-        __gen_bld_pyramid(a, np.random.uniform(settings.settings["bld_h_min"], settings.settings["bld_h_max"]))
+        # simply minx, miny
+        max_h = settings.settings["bld_h_max"]
+
+        #print(settings.settings["height_hot_spots"])
+
+        for p in settings.settings["height_hot_spots"]:
+            dist = utils.geom_dist(a[0:2], p[0])
+
+            if dist < p[2]:
+                max_h += p[1] * dist / p[2]
+
+        __gen_bld_pyramid(a, np.random.uniform(settings.settings["bld_h_min"], max_h))
