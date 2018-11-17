@@ -14,16 +14,15 @@
     "bld_pyramid_box_cnt_max":  4,
     "bld_pyramid_step_max":     0.1,
 
-    "bld_boxy_prob":            0,
     "bld_boxy_segm_prob":       [1,  1.0,  0.5,  0.5,  0.5],
     "bld_boxy_segm_step_max":   [0.0, 0.2, 0.15, 0.12, 0.10],
     "bld_boxy_segm_h_max":      [0.1, -1.0, 0.1, 0.5, 0.03], // -1 means fill the rest, can be only one
 
-    "bld_boxy_div_min":         10,
-    "bld_boxy_div_max":         20,
-
-    "bld_boxy_towers_min":      2,
-    "bld_boxy_towers_max":      7,
+    "bld_roof_ant_prob":        0,
+    "bld_roof_ant_h_min":       15,
+    "bld_roof_ant_h_max":       20,
+    "bld_roof_ant_d_min":       7,
+    "bld_roof_ant_d_max":       10,
 
     "bld_helipads":             1, // how many to generate
 
@@ -41,9 +40,11 @@
     "car_prob_min":             0,
     "car_prob_max":             1,
 
-    "car_l_min":                3,
-    "car_l_max":                6,
+    "car_l_min":                6,
+    "car_l_max":                10,
     "car_h_ratio":              0.5,
+
+    "car_lane_w":               4,
 
     //#######################################
     "debug":                    "True"

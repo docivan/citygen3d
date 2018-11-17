@@ -5,6 +5,7 @@ import cv2
 
 import settings
 import model3d
+import utils
 
 #encoding: (street_start, street_end) - in __HORIZ or __VERT coords, respectively
 streets_x = []
@@ -18,36 +19,43 @@ __DOWN = 1
 __img = []
 
 #assumes dir = up => thus flip if not
-def __gen_car_lane(x, y1, y2, w) : #, dir = __UP):
+def __gen_car_lane(x, y1, y2, flip) : #, dir = __UP):
     # TODO follow exponential function
     # this means: generate grid, fill according to probability (exp)
     # then jitter by (0, car_max_w/w)
     # -- for loop with up to f.ex. 10 attempts at jitter, if fail = abandom
 
     cars = []
-    #cur_y = y1
-    #while True:
 
     # generate grid:
-    car_slots = np.random.randint(0, 2, size=int(math.floor((y2-y1)/settings.settings["car_l_max"])))
-    #print(car_slots)
-    #print(w)
+    slot_cnt = int(math.floor((y2-y1)/(settings.settings["car_l_max"])))
 
-    for idx, val in enumerate(car_slots):
-        if val:
+    for idx in range(slot_cnt):
+        p = np.random.uniform()
+
+        prob = float(idx) / float(slot_cnt)
+
+        if flip:
+            prob = 1 - prob
+
+        if p < prob:
             cars.append((
-                (x - w/2., y1 + idx*settings.settings["car_l_max"]),
-                (x + w/2., y1 + (idx+1)*settings.settings["car_l_max"])
+                (x - settings.settings["car_lane_w"]*1.1/2., y1 + idx*settings.settings["car_l_max"]),
+                (x + settings.settings["car_lane_w"]*1.1/2., y1 + (idx+1)*settings.settings["car_l_max"])
             ))
-
-
-    #for
 
     return cars
 
 def __gen_car(bound_rect):
     # TODO - 3d
-    model3d.cube_2dh((bound_rect[0][0], bound_rect[0][1], bound_rect[1][0], bound_rect[1][1]),
+
+    ratio = (settings.settings["car_l_max"] - settings.settings["car_l_min"]) / settings.settings["car_l_max"] \
+            *np.random.uniform() # 1 - utils.distrib_exp())
+
+    model3d.cube_2dh((bound_rect[0][0] + (bound_rect[1][0] - bound_rect[0][0]) * ratio,
+                      bound_rect[0][1] + (bound_rect[1][1] - bound_rect[0][1]) * ratio,
+                      bound_rect[1][0] - (bound_rect[1][0] - bound_rect[0][0]) * ratio,
+                      bound_rect[1][1] - (bound_rect[1][1] - bound_rect[0][1]) * ratio),
                      height=(bound_rect[1][0]-bound_rect[0][0])*settings.settings["car_h_ratio"])
 
     if settings.settings["debug"]:
@@ -68,15 +76,28 @@ def __gen_st(rect, dir=__VERT):
 
     # for now, only 2 lanes no matter what
     midlane_div = (st_rect[1][0]-st_rect[0][0]) / 3.
+    w = settings.settings["car_lane_w"]
 
-    # TODO gen both up and down
-    cars = __gen_car_lane(st_rect[0][0] + midlane_div, st_rect[0][1], st_rect[1][1], midlane_div/2.) + \
-           __gen_car_lane(st_rect[0][0] + 2*midlane_div, st_rect[0][1], st_rect[1][1], midlane_div/2.)
+    lane_cnt = (st_rect[1][0] - st_rect[0][0] - 2*w) / w
+
+    if lane_cnt % 2 != 0:
+        lane_cnt-=1
+
+    cars = []
+
+    x_div = (st_rect[1][0] - st_rect[0][0]) / (lane_cnt + 2)
+
+    for i in range(int(lane_cnt / 2)):
+        x_pos1 = st_rect[0][0] + x_div + x_div * i + 0.5*x_div
+        x_pos2 = st_rect[1][0] - x_div * 2 - x_div * i  + 0.5*x_div
+        cars = cars + __gen_car_lane(x_pos1, st_rect[0][1], st_rect[1][1], flip = False)
+        cars = cars + __gen_car_lane(x_pos2, st_rect[0][1], st_rect[1][1], flip = True)
 
     for car in cars:
         if dir == __HORIZ:  # flip x and y back
             car = ((car[0][1], car[0][0]), (car[1][1], car[1][0]))
         __gen_car(car)
+
 
 def generate():
     print("Generating streets...")
