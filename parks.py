@@ -33,9 +33,6 @@ def gen_tree(rect, z):
         s = diameter/2. - diameter/3./2.
         model3d.cube_2v((x-s,y-s,z), (x+s,y+s,z+diameter/4.))
 
-    #if settings.settings["debug"]:
-        #cv2.circle(img, (int(x), int(y)), int(diameter / 2), (0, 0, 0), thickness=1)
-
 
 #z != 0 means roof garden
 def gen_park(rect, z=0):
@@ -43,7 +40,7 @@ def gen_park(rect, z=0):
 
     fill = random.uniform(settings.settings["tree_fill_min"], settings.settings["tree_fill_max"])
     if z != 0:
-        fill = 1
+        fill = settings.settings["bld_roof_garden_fill"]
 
     tree_cnt = int(math.floor(len(potential_trees) * fill))
 

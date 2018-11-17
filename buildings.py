@@ -63,13 +63,8 @@ def __gen_roof_decor(roof_rect, z):
     treespaces = math.floor((roof_rect[2] - roof_rect[0]) / settings.settings["tree_sz_max"]) *\
                  math.floor((roof_rect[3] - roof_rect[1]) / settings.settings["tree_sz_max"])
 
-    if treespaces>=4 and np.random.uniform() < settings.settings["bld_roof_garden"]:
-        # TODO this should really use the actual rect as directed by style!
+    if treespaces>=4 and np.random.uniform() < settings.settings["bld_roof_garden_prob"]:
         parks.gen_park(roof_rect, z=z)
-        #parks.gen_park([roof_rect[0] + (roof_rect[2] - roof_rect[0]) * settings.settings["bld_pyramid_step_max"],
-        #                 roof_rect[1] + (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"],
-        #                 roof_rect[2] - (roof_rect[2] - roof_rect[0]) * settings.settings["bld_pyramid_step_max"],
-        #                 roof_rect[3] - (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"]], z=z)
 
 
 
@@ -135,28 +130,63 @@ def __render_segm(rect, z1, z2, style, sides=(__UP, __DOWN, __LEFT, __RIGHT)):
 
         cumul_z += (z2-z1)*s[1]
 
-    p = np.random.uniform()
-    if p < settings.settings["bld_facade_stripes_prob"]:
-        #vertical, HACK
-        if np.random.uniform() < 1:
+    # facade decor:
+    if np.random.uniform() < settings.settings["bld_facade_stripes_prob"]:
+        facade_type = np.random.randint(0, 4)  # 0 - SN vert, 1 - EW vert, 2 - both vert, 3 - horiz (all walls)
+
+        #vert south + north
+        if facade_type==0 or facade_type==2:
             stripe_cnt = np.random.randint(settings.settings["bld_facade_stripes_min"],
                                            settings.settings["bld_facade_stripes_max"])
+            stripe_w = (max_offset_rect[3] - max_offset_rect[0]) / (stripe_cnt*2+1)
 
-            if np.random.uniform() < 0.5:
-                stripe_w = (max_offset_rect[3] - max_offset_rect[0]) / (stripe_cnt*2+1)
+            for i in range(stripe_cnt):
+                x = max_offset_rect[0] + stripe_w + stripe_w*2*i
+                model3d.cube_2dh(
+                    [x, rect[1], x + stripe_w, max_offset_rect[1]],
+                    height=(max_offset_rect[5]-max_offset_rect[2]), z = max_offset_rect[2])
+                model3d.cube_2dh(
+                    [x, max_offset_rect[4], x + stripe_w, rect[3]],
+                    height=(max_offset_rect[5] - max_offset_rect[2]), z=max_offset_rect[2])
 
-                for i in range(stripe_cnt):
-                    x = rect[0] + stripe_w + stripe_w*2*i
-                    model3d.cube_2dh(
-                        [x, rect[1], x + stripe_w, max_offset_rect[1]],
-                        height=(max_offset_rect[5]-max_offset_rect[2]), z = max_offset_rect[2])
-                    #TODO - the other side!
-            else:
-                a = 0
-                # TODO the other two sides
-        else:
-            a=0
-            #TODO horisontal
+        #vert east + west
+        if facade_type == 1 or facade_type == 2:
+            stripe_cnt = np.random.randint(settings.settings["bld_facade_stripes_min"],
+                                           settings.settings["bld_facade_stripes_max"])
+            stripe_w = (max_offset_rect[4] - max_offset_rect[1]) / (stripe_cnt * 2 + 1)
+
+            for i in range(stripe_cnt):
+                y = max_offset_rect[1] + stripe_w + stripe_w * 2 * i
+                model3d.cube_2dh(
+                    [rect[0], y, max_offset_rect[0], y + stripe_w],
+                    height=(max_offset_rect[5] - max_offset_rect[2]), z=max_offset_rect[2])
+                model3d.cube_2dh(
+                    [max_offset_rect[3], y, rect[2], y + stripe_w],
+                    height=(max_offset_rect[5] - max_offset_rect[2]), z=max_offset_rect[2])
+
+        # horiz
+        if facade_type == 3:
+            if max_offset_rect[5] - max_offset_rect[2] < (settings.settings["bld_sq_min"]*5):
+                return
+
+            stripe_cnt = np.random.randint(settings.settings["bld_facade_stripes_min"]*2,
+                                           settings.settings["bld_facade_stripes_max"]*2)
+            stripe_w = (max_offset_rect[5] - max_offset_rect[2]) / (stripe_cnt * 2 + 1)
+
+            if stripe_w < settings.settings["bld_sq_min"]:
+                stripe_cnt = math.floor((max_offset_rect[5] - max_offset_rect[2]) / settings.settings["bld_sq_min"])
+                stripe_w = (max_offset_rect[5] - max_offset_rect[2]) / (stripe_cnt * 2 + 1)
+
+            for i in range(stripe_cnt):
+                z = max_offset_rect[2] + stripe_w + stripe_w * 2 * i
+                model3d.cube_2dh([rect[0], rect[1], rect[2], max_offset_rect[1]], height=stripe_w, z=z)
+                model3d.cube_2dh([rect[0], max_offset_rect[4], rect[2], rect[3]], height=stripe_w, z=z)
+                model3d.cube_2dh([rect[0], max_offset_rect[1], max_offset_rect[0], max_offset_rect[4]],
+                                 height=stripe_w, z=z)
+                model3d.cube_2dh([max_offset_rect[3], max_offset_rect[1], rect[2], max_offset_rect[4]],
+                                 height=stripe_w, z=z)
+
+
 
 
 def __gen_bld_pyramid(rect, h):

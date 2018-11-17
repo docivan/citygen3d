@@ -37,14 +37,14 @@
     //#######################################
     // buildings
 
-    "bld_sq_min":               2,  // minimum size of a structural elem
+    "bld_sq_min":               7,  // minimum size of a structural elem
 
     "bld_s_min":                30,
     "bld_s_max":                300,
 
     "bld_h_min":                100,
     "bld_h_max":                200,
-    "height_hot_spots":         [[[600,600], 100, 400], [[800,800], 100, 150]], //center, additional_height, radius
+    "height_hot_spots":         [[[600,600], 100, 500], [[800,800], 100, 250]], //center, additional_height, radius
 
     "bld_pyramid_prob":         1,
     "bld_pyramid_box_cnt_min":  2,
@@ -55,7 +55,7 @@
     "bld_boxy_segm_step_max":   [0.0, 0.2, 0.15, 0.12, 0.10],
     "bld_boxy_segm_h_max":      [0.1, -1.0, 0.1, 0.5, 0.03], // -1 = expander, only 1 allowed
 
-    "bld_facade_stripes_prob":  1,
+    "bld_facade_stripes_prob":  0.7,
     "bld_facade_stripes_min":   2,
     "bld_facade_stripes_max":   10,
 
@@ -70,13 +70,8 @@
     "bld_roof_cone_prob":       0.1,
     "bld_roof_cone_h_ratio":    0.05,
 
-    "bld_roof_garden":          0.7,
-
-    //#######################################
-    // tree settings
-
-    "tree_sz_max":              20,
-    "tree_sz_min":              10,
+    "bld_roof_garden_prob":     1,
+    "bld_roof_garden_fill":     0.9,
 
     //#######################################
     //car settings
