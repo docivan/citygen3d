@@ -5,7 +5,6 @@ import cv2
 
 import settings
 import model3d
-import utils
 
 #encoding: (street_start, street_end) - in __HORIZ or __VERT coords, respectively
 streets_x = []
@@ -13,8 +12,6 @@ streets_y = []
 
 __HORIZ = 0
 __VERT = 1
-__UP = 0
-__DOWN = 1
 
 __img = []
 

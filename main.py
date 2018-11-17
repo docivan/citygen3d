@@ -82,10 +82,9 @@ if height < block_w_max * 2:
     print("Got:", height, ", but need at least", block_w_max * 2)
     height = block_w_max * 2
 
-model3d.init("test.stl")
+model3d.init("output.stl")
 model3d.cube_2v((0, 0, -board_thickness), (width + skirt_size * 2, height + skirt_size * 2, 0))
-#model3d.cubed_sphere((0,0,0), 5)
-#quit()
+
 
 ###########################################################################################
 # block generation

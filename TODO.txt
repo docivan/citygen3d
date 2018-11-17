@@ -45,14 +45,18 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [ ] __circle2d_xy should envoke 2d circle point generator
 [ ] tree types: complex cone, cyl w half-sphere on top, cyl w/o sphere, cubed sphere as now
 [ ] the two generators in buildings.py should be using the same architecture, not 2 diff approaches
-[ ] PRI!! building segm render should be able to gen WESN segments (facades?!?)
+[V] PRI!! building segm render should be able to gen WESN segments (facades?!?)
 [ ] above should be solved by: which sides to gen? and which subdiv to use
 [ ] custom distrib function (bilinear? = x^2 function with cutoff where it crosses x-axis)
-[ ] custom distrib function (exp? - implement cutoff!)
+[V] custom distrib function
+[ ] fully implement exp distrib, right now just a stub - implement cutoff!
+[ ] PRI! facade decor
+[ ] if continue development: min structural elem size should be enforced, also for ledges!
+[V] bld generation
+[V] proper car generation?
+
 
 VERSION v04
-[ ] bld generation
-[ ] proper car generation?
 [ ] cars should nonetheless be 3d structures!
 [ ] trucks on the roads: takes up two spaces and are higher!
 [ ] cars turning?

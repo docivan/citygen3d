@@ -44,8 +44,6 @@ def __gen_antenna(rect, z):
     model3d.cone(c, d, h)
 
 
-
-
 def __gen_roof_decor(roof_rect, z):
     p = np.random.uniform()
     if p < settings.settings["bld_roof_ant_prob"]:

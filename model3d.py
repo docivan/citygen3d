@@ -1,6 +1,7 @@
 import math
 import numpy as np
 
+
 stlfile = None
 
 
@@ -271,26 +272,3 @@ def sphere_cubed(c, d, ratio = 1./3.):
         (x_inset_max, y_inset_max, z4),
         (x_inset_min, y_inset_max, z4)
         ])
-
-
-
-
-
-
-
-# stlfile = init("test.stl")
-# cube2v((-1,-1,-1), (1,1,1))
-# cube2v((1,1,1), (-1,-1,-1))
-# cube_2dh((-1,-1, 1,1), height=4)
-# sphere((1,1,1), 2)
-# sphere((0,0,0), 2)
-# cylinder((0,0,0), 2, 5)
-# deinit(stlfile)
-
-# geom testing
-#model3d.sphere((-10,-10,-10), 10, subdiv_xy=3, subdiv_z=1)
-#model3d.cylinder((-5,-10,-10), 10, 5)
-#model3d.cone((-25,-10,-10), 10, 5)
-#model3d.truncated_cone((-50,-10,-10), 10, 5, 5)
-#model3d.cube([(-75,-10,-10), (-80,-10,-10), (-80,-5,-10), (-75,-5,-10),
-#              (-76,-9, -5), (-79, -9, -5), (-79, -6, -5), (-76, -6, -5)])
