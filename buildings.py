@@ -17,12 +17,10 @@ def __gen_antenna(rect, z):
     xq = (rect[2]-rect[0])/4.
     yq = (rect[3]-rect[1])/4.
 
-    if xq < (settings.settings["bld_roof_ant_d_max"]/2.) or yq < (settings.settings["bld_roof_ant_d_max"]/2.):
+    if xq < (settings.settings["bld_roof_ant_d"]/2.) or yq < (settings.settings["bld_roof_ant_d"]/2.):
         return
 
-    c = list(rect[0:2])
-    c.append(z)
-    d = np.random.uniform(settings.settings["bld_roof_ant_d_min"], settings.settings["bld_roof_ant_d_max"])
+    c = [rect[0] - settings.settings["bld_roof_ant_d"]/2., rect[1] - settings.settings["bld_roof_ant_d"]/2.]
     h = np.random.uniform(settings.settings["bld_roof_ant_h_min"], settings.settings["bld_roof_ant_h_max"])
 
     if pos == 1:
@@ -31,23 +29,37 @@ def __gen_antenna(rect, z):
     elif pos == 2:
         c[0] += xq * 3
         c[1] += yq
-    elif pos == 2:
+    elif pos == 3:
         c[0] += xq * 3
         c[1] += yq * 3
-    elif pos == 2:
+    elif pos == 4:
         c[0] += xq
         c[1] += yq * 3
     else:
         c[0] += xq * 2
         c[1] += yq * 2
 
-    model3d.cone(c, d, h)
+    c.append(c[0] + settings.settings["bld_roof_ant_d"])
+    c.append(c[1] + settings.settings["bld_roof_ant_d"])
+    model3d.cube_2dh(c, height=h, z=z)
 
 
 def __gen_roof_decor(roof_rect, z):
     p = np.random.uniform()
     if p < settings.settings["bld_roof_ant_prob"]:
         __gen_antenna(roof_rect, z)
+        return
+
+    p = np.random.uniform()
+    if p < settings.settings["bld_roof_cone_prob"]:
+        # TODO this should really use the actual rect as directed by style!
+        model3d.pyramid([roof_rect[0] + (roof_rect[2] - roof_rect[0]) * settings.settings["bld_pyramid_step_max"],
+                         roof_rect[1] + (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"],
+                         roof_rect[2] - (roof_rect[2] - roof_rect[0]) * settings.settings["bld_pyramid_step_max"],
+                         roof_rect[3] - (roof_rect[3] - roof_rect[1]) * settings.settings["bld_pyramid_step_max"]],
+                        z*settings.settings["bld_roof_cone_h_ratio"], z=z)
+        return
+
 
 
 # ((s_ratio, h_ratio)) - all relative; notes:
@@ -139,6 +151,7 @@ def __gen_bld_pyramid(rect, h):
 
         __render_segm(segm_rect, zprev, z, __gen_bld_elem_style())
 
+    # best option would to code function __get_style_elem_rects (base_rect, style, elem_id)
     __gen_roof_decor(segm_rect, zcoords[-1])
 
     # TODO facade decor (lines / stripes +++)
@@ -154,8 +167,6 @@ def generate(bld_areas):
 
         # simply minx, miny
         max_h = settings.settings["bld_h_max"]
-
-        #print(settings.settings["height_hot_spots"])
 
         for p in settings.settings["height_hot_spots"]:
             dist = utils.geom_dist(a[0:2], p[0])

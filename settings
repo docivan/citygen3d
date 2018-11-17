@@ -41,6 +41,7 @@
 
     "bld_h_min":                100,
     "bld_h_max":                200,
+    "height_hot_spots":         [[[600,600], 100, 400], [[800,800], 100, 150]], //center, additional_height, radius
 
     "bld_pyramid_prob":         1,
     "bld_pyramid_box_cnt_min":  2,
@@ -51,15 +52,20 @@
     "bld_boxy_segm_step_max":   [0.0, 0.2, 0.15, 0.12, 0.10],
     "bld_boxy_segm_h_max":      [0.1, -1.0, 0.1, 0.5, 0.03], // -1 = expander, only 1 allowed
 
-    "bld_roof_ant_prob":        0,
+    //#######################################
+    //roof decor
+
+    "bld_roof_ant_prob":        0.1,
     "bld_roof_ant_h_min":       15,
     "bld_roof_ant_h_max":       20,
-    "bld_roof_ant_d_min":       7,
-    "bld_roof_ant_d_max":       10,
+    "bld_roof_ant_d":           5,
 
-    "height_hot_spots":         [[[600,600], 100, 400], [[800,800], 100, 150]], //center, additional_height, radius
+    "bld_roof_cone_prob":       0.1,
+    "bld_roof_cone_h_ratio":    0.05,
 
     //#######################################
+    // tree settings
+
     "tree_sz_max":              20,
     "tree_sz_min":              10,
 

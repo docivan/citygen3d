@@ -272,3 +272,17 @@ def sphere_cubed(c, d, ratio = 1./3.):
         (x_inset_max, y_inset_max, z4),
         (x_inset_min, y_inset_max, z4)
         ])
+
+
+def pyramid(rect, h, z = 0):
+    b1 = [rect[0], rect[1], z]
+    b2 = [rect[2], rect[1], z]
+    b3 = [rect[2], rect[3], z]
+    b4 = [rect[0], rect[3], z]
+    t = [rect[0] + (rect[2]-rect[0])/2., rect[1] + (rect[3]-rect[1])/2., z + h]
+
+    quad(b1, b4, b3, b2)
+    triangle(t, b1, b2)
+    triangle(t, b2, b3)
+    triangle(t, b3, b4)
+    triangle(t, b4, b1)
