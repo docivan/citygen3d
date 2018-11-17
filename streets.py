@@ -41,6 +41,7 @@ def __gen_car_lane(x, y1, y2, flip):
 
     return cars
 
+
 def __gen_car(bound_rect):
     ratio = (settings.settings["car_l_max"] - settings.settings["car_l_min"]) / settings.settings["car_l_max"] \
             * np.random.uniform()
@@ -56,6 +57,7 @@ def __gen_car(bound_rect):
         p2 = (int(bound_rect[1][0]), int(bound_rect[1][1]))
 
         cv2.rectangle(__img, p1, p2, (random.randint(0, 254), random.randint(0, 254), random.randint(0, 254)), -1)
+
 
 def __gen_st(rect, dir=__VERT):
     st_rect = rect
@@ -99,7 +101,7 @@ def generate():
     v_st_rects = []
 
     for st_x in range(len(streets_x)):
-        start = (streets_x[st_x][0], 0)
+        start = (streets_x[st_x][0], settings.settings["skirt_size"])
 
         for st_y in range(len(streets_y)):
             if intersections[st_x][st_y] == __HORIZ:
@@ -107,12 +109,13 @@ def generate():
                 start = (streets_x[st_x][0], streets_y[st_y][0] + streets_y[st_y][1])
 
         # last one
-        v_st_rects.append((start, (streets_x[st_x][0] + streets_x[st_x][1], settings.settings["height"])))
+        v_st_rects.append((start, (streets_x[st_x][0] + streets_x[st_x][1],
+                                   settings.settings["skirt_size"] + settings.settings["height"])))
 
     h_st_rects = []
 
     for st_y in range(len(streets_y)):
-        start = (0, streets_y[st_y][0])
+        start = (settings.settings["skirt_size"], streets_y[st_y][0])
 
         for st_x in range(len(streets_x)):
             if intersections[st_x][st_y] == __VERT:
@@ -120,7 +123,8 @@ def generate():
                 start = (streets_x[st_x][0] + streets_x[st_x][1], streets_y[st_y][0])
 
         # last one
-        h_st_rects.append((start, (settings.settings["width"], streets_y[st_y][0] + streets_y[st_y][1])))
+        h_st_rects.append((start, (settings.settings["skirt_size"] + settings.settings["width"],
+                                   streets_y[st_y][0] + streets_y[st_y][1])))
 
     if settings.settings["debug"]:
         for v in v_st_rects + h_st_rects:

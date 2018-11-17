@@ -7,3 +7,5 @@
 [X] BUG07 - there seem to be empty spaces??
 [ ] BUG08 - roof glitch?
 [V] BUG09 - thin pyramids?
+[V] BUG10 - cars do not respect skirt size
+[V] BUG11 - cars do not fill entire lanes (skirt bug again...)

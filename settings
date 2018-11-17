@@ -10,7 +10,7 @@
     "seed":                     12345,
 
     "board_thickness":          5,
-    "skirt_size":               10,
+    "skirt_size":               30,
 
     //#######################################
     // street settings
@@ -21,7 +21,7 @@
     "small_st_w_min":           20,
     "small_st_w_max":           40,
 
-    "block_w_min":              100,
+    "block_w_min":              120,
     "block_w_max":              200,
 
     //#######################################

@@ -1,9 +1,9 @@
-VERSION v01, aka proof of concept 1
+VERSION v0.1, aka proof of concept 1
 - main goal is that a city can be generated and printed
 [V] block gen + simple buildings
 - finished night 13.11.2018
 
-VERSION v02, aka proof of concept 2
+VERSION v0.2, aka proof of concept 2
 - main goal is to have a city generator with somewhat complete / mock up features ready
 [V] edit to make file as global, do not need to pass stlfile
 [V] 3d funcs into utils.py
@@ -20,49 +20,55 @@ VERSION v03, stability, clean up, setting up a more solid foundation for later
 [V] comment stripping from json config file
 [V] finish primitives: cone, cylinder
 [V] finish tree generation
-[ ] streets.py is a mess
-[ ] proper JSON everywhere
+[V] streets.py is a mess
+[V] proper JSON everywhere
 [V] fix JSON comments, see BUG003
-[ ] instead of awkward for loops with idx in range => do idx, val in enumerate
-[ ] 2d rect should be standardised!
-[ ] move cmp float to utils?
-[ ] using randint for height for example - should be float!
-[ ] debug visualization: separate functions
-[ ] refactor main.py file - rename citygen3.py, split, perhaps make __main__ function, etc
+[V] move cmp float to utils?
+[X] using randint for height for example - should be float!
+[X] debug visualization: separate functions
+[V] refactor main.py file - rename citygen3.py, split, perhaps make __main__ function, etc
 [V] assert subdivs
 [V] test blender intersect geometry fix
+[V] cubed spheres for trees - saving poly count, no impact on quality and saving ourselves from slicing pains
+[X] consider complex trees = trunk with expanding cone, then cyl on top, then half-sphere to cap off
+[X] the two generators in buildings.py should be using the same architecture, not 2 diff approaches
+[V] PRI!! building segm render should be able to gen WESN segments (facades?!?)
+[X] above should be solved by: which sides to gen? and which subdiv to use
+[V] custom distrib function
+[V] PRI! facade decor
+[V] bld generation
+[V] proper car generation?
+[V] a way to calib min resolution?
+[V] gen height map while making buildings -
+
+VERSION v0.3.1 - small bug fixes before the final print
+small bug fixes and tweaks
+[V] fixed BUG10 and BUG11
+[V] some final setting tweaks
+
+VERSION v0.4
+[ ] trunk ratio as configurable param
 [ ] replace "cube" with "box"
 [ ] cube creation should be cleaned up - not always drawing ccw!!
 [ ] check that all 3d functions have the correct asserts!
-[V] cubed spheres for trees - saving poly count, no impact on quality and saving ourselves from slicing pains
-[ ] trunk ratio as configurable param
-[X] consider complex trees = trunk with expanding cone, then cyl on top, then half-sphere to cap off
-[ ] or just skip the trunk: expanding subdiv trunc cone, then cyl with same subdiv, then half-sphere
+[ ] just skip the trunk: expanding subdiv trunc cone, then cyl with same subdiv, then half-sphere
 [ ] tree height should be considerably larger
 [ ] complex pine: expanding subdiv trunc cone, then sharp-domed cone
 [ ] for the above: expand cone function to be "lofted" (arbitrary number for rings in z-dir)
 [ ] in addition: "loft" box function with arbitrary number of z-rings
 [ ] __circle2d_xy should envoke 2d circle point generator
 [ ] tree types: complex cone, cyl w half-sphere on top, cyl w/o sphere, cubed sphere as now
-[X] the two generators in buildings.py should be using the same architecture, not 2 diff approaches
-[V] PRI!! building segm render should be able to gen WESN segments (facades?!?)
-[ ] above should be solved by: which sides to gen? and which subdiv to use
 [ ] custom distrib function (bilinear? = x^2 function with cutoff where it crosses x-axis)
-[V] custom distrib function
 [ ] fully implement exp distrib, right now just a stub - implement cutoff!
-[V] PRI! facade decor
 [ ] if continue development: min structural elem size should be enforced, also for ledges!
-[V] bld generation
-[V] proper car generation?
 [ ] rename style with profile
-[V] a way to calib min resolution?
-[ ] operations on rects (like width and height) should be defined in model3d or utils
-
-VERSION v04
 [ ] cars should nonetheless be 3d structures!
 [ ] trucks on the roads: takes up two spaces and are higher!
 [ ] cars turning?
 [ ] helipad
-[ ] gen height map while making buildings -
+[ ] operations on rects (like width and height) should be defined in model3d or utils
+[ ] instead of awkward for loops with idx in range => do idx, val in enumerate
+[ ] 2d rect should be standardised!
+[ ] further clean up main: __main, fewer global vars etc etc
 
 unsorted:
